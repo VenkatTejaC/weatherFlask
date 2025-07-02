@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        /* Fullscreen Video Background */
+        #bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: 200%;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 70px 70px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .weather {
+            margin-top: 20px;
+        }
+
+        .refresh-btn {
+            background-color: #008CBA;
+            margin-top: 15px;
+        }
+
+        .refresh-btn:hover {
+            background-color: #007bb5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="{{ url_for('static', filename='clouds.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <h1>Weather App</h1>
+
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter city name" required><br>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if weather %}
+            <div class="weather">
+                <h2>Weather in {{ weather.city }}</h2>
+                <p>Temperature: {{ weather.temperature }}°C</p>
+                <p>Description: {{ weather.description }}</p>
+                <p>Humidity: {{ weather.humidity }}%</p>
+                <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+            </div>
+
+            <!-- Refresh Button -->
+            <form method="GET">
+                <button type="submit" class="refresh-btn">Refresh</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
